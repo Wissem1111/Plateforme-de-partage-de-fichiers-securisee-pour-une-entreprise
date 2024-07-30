@@ -1,23 +1,22 @@
 package com.intership.file.share.files.management.model.dto;
 
-import com.intership.file.share.users.management.model.entity.User;
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.List;
-
+import com.intership.file.share.files.management.model.entity.File;
+import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileDto {
-    private int id;
-    private String name;
-    private String type;
+    private String fileName;
+    private String fileType;
     private byte[] data;
-    private User owner;
-    private List<String> permission;
+
+    public FileDto(File entity) {
+        this.fileName = entity.getFileName();
+        this.fileType = entity.getFileType();
+        this.data = entity.getData();
+
+    }
 }
+
+

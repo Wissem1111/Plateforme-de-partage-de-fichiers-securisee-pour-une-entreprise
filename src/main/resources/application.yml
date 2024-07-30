@@ -1,11 +1,22 @@
 spring:
   datasource:
-
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/Spring_db
     username: postgres
     password: root
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     hibernate:
       ddl-auto: create
+file:
+  upload-dir: F:/Work/uploader
+
+servlet:
+  multipart:
+    file-size-threshold: 2KB
+    max-file-size: 200MB
+    max-request-size: 215MB
