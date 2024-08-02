@@ -1,6 +1,6 @@
 package com.intership.file.share.users.management.model.dto;
 
-import com.intership.file.share.roles.management.model.entity.Role;
+import com.intership.file.share.roles.management.enume.Role;
 import lombok.*;
 
 @Getter

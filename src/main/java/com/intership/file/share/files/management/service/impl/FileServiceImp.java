@@ -5,6 +5,7 @@ import com.intership.file.share.files.management.model.entity.File;
 import com.intership.file.share.files.management.model.mapper.FileMapper;
 import com.intership.file.share.files.management.repository.FileRepository;
 import com.intership.file.share.files.management.service.FileService;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,7 +21,7 @@ public class FileServiceImp implements FileService {
     @Autowired
     private FileMapper fileMapper;
     @Override
-    public FileDto saveAttachment(MultipartFile file) throws Exception {
+    public FileDto uploadFile(MultipartFile file) throws Exception {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (fileName.contains("..")) {
@@ -32,7 +33,10 @@ public class FileServiceImp implements FileService {
             File fileEntity = new File();
             fileEntity.setFileName(fileName);
             fileEntity.setFileType(file.getContentType());
-            fileEntity.setData(file.getBytes());
+
+            String base64EncodedData = Base64.encodeBase64String(file.getBytes());
+            fileEntity.setData(base64EncodedData.getBytes());
+
             File savedFile = fileRepository.save(fileEntity);
             return fileMapper.toDTO(savedFile);
         } catch (MaxUploadSizeExceededException e) {
@@ -45,7 +49,7 @@ public class FileServiceImp implements FileService {
     public void saveFiles(MultipartFile[] files) {
         Arrays.asList(files).forEach(file -> {
             try {
-                saveAttachment(file);
+                uploadFile(file);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
