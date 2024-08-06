@@ -1,4 +1,8 @@
 spring:
+  application:
+    name:
+      spring-W
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/Spring_db
@@ -7,15 +11,19 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+  main:
+    allow-circular-references: true
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
     database: postgresql
 file:
-  upload-dir: F:/Work/uploader
-
+  upload-dir: F:/Work/
+token:
+  signing:
+    key: 413F4428472B4B6250655368566D5970337336763979244226452948404D6351

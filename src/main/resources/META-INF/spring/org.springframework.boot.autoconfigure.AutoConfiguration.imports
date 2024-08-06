@@ -1,1 +1,3 @@
-com.intership.file.share.files.management.config.Config
+com.intership.file.share.config.Config
+com.intership.file.share.auth.config.SecurityConfiguration
+com.intership.file.share.auth.config.ApplicationConfig

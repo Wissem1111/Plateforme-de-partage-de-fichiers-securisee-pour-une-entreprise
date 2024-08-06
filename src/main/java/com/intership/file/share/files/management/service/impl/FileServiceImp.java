@@ -7,11 +7,15 @@ import com.intership.file.share.files.management.repository.FileRepository;
 import com.intership.file.share.files.management.service.FileService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 @Service
@@ -60,4 +64,17 @@ public class FileServiceImp implements FileService {
         List<File> files = fileRepository.findAll();
         return fileMapper.toDTOList(files);
     }
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+    @Override
+    public void deleteFile(Long Id) throws Exception {
+        File fileEntity = fileRepository.findById(Id)
+                .orElseThrow(() -> new Exception("File not found with id " + Id));
+
+        Path filePath = Paths.get(uploadDir, fileEntity.getFileName());
+        Files.deleteIfExists(filePath);
+
+        fileRepository.delete(fileEntity);
+}
 }

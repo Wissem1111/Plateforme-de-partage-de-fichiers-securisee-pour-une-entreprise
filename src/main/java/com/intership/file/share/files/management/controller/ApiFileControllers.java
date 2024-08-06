@@ -76,7 +76,6 @@ public class ApiFileControllers {
                     decodedBytes.length
             );
         }).collect(Collectors.toList());
-
         return ResponseEntity.ok(responseFiles);
     }
 
@@ -123,5 +122,15 @@ public class ApiFileControllers {
             }
         }
         return ResponseEntity.ok(responseList);
+    }
+
+    @DeleteMapping("/{Id}")
+    public ResponseEntity<Void> deleteFile(@PathVariable Long Id) {
+        try {
+            fileService.deleteFile(Id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

@@ -7,4 +7,5 @@ public interface FileService {
     FileDto uploadFile(MultipartFile file) throws Exception;
     void saveFiles(MultipartFile[] files) throws Exception;
     List<FileDto> getAllFiles();
+    void deleteFile(Long Id) throws Exception;
 }
