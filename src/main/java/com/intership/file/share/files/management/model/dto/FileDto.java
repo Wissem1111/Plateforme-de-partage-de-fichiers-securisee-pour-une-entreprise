@@ -1,5 +1,6 @@
 package com.intership.file.share.files.management.model.dto;
 
+import com.intership.file.share.auth.user.User;
 import com.intership.file.share.files.management.model.entity.File;
 import lombok.*;
 @Getter
@@ -10,11 +11,13 @@ public class FileDto {
     private String fileName;
     private String fileType;
     private byte[] data;
+    private User owner;
 
     public FileDto(File entity) {
         this.fileName = entity.getFileName();
         this.fileType = entity.getFileType();
         this.data = entity.getData();
+
 
     }
 }

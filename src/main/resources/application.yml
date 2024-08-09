@@ -8,6 +8,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/Spring_db
     username: postgres
     password: root
+    hikari:
+      auto-commit: false
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false

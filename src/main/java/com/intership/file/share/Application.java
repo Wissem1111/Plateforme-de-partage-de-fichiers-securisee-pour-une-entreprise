@@ -8,13 +8,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EntityScan(basePackages = {
 		"com.intership.file.share.files.management",
-		"com.intership.file.share.auth.user"
+		"com.intership.file.share.auth.user",
+		"com.intership.file.share.auditLogs.management"
 })
 
 
 @EnableJpaRepositories(basePackages = {
 		"com.intership.file.share.files.management",
-		"com.intership.file.share.auth.Repository"
+		"com.intership.file.share.auth.Repository",
+		"com.intership.file.share.auditLogs.management.repository"
 })
 
 @SpringBootApplication

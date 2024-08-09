@@ -1,34 +1,42 @@
 package com.intership.file.share.auth.user;
 
+import com.intership.file.share.files.management.model.entity.File;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.intership.file.share.auditLogs.management.entity.AuditLog;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-
-
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String firstName;
     private String lastName;
     @Column(unique = true)
     private String email;
     private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<AuditLog> auditLogs;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<File> files;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -36,8 +44,11 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        // email in our case
         return email;
+    }
+    @Override
+    public String getPassword() {
+        return this.password;
     }
 
     @Override

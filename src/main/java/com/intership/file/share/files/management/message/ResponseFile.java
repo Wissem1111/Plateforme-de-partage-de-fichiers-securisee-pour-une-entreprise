@@ -14,6 +14,7 @@ public class ResponseFile {
     private String fileType;
     private long size;
 
+
 }
 
 
