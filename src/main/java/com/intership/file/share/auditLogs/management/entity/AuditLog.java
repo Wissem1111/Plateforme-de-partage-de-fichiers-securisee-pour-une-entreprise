@@ -1,5 +1,9 @@
 package com.intership.file.share.auditLogs.management.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.intership.file.share.auth.user.User;
 import com.intership.file.share.files.management.model.entity.File;
 import jakarta.persistence.*;
@@ -25,10 +29,12 @@ public class AuditLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id", nullable = false)
+    @JsonIgnore
     private File file;
 }
 

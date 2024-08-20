@@ -61,30 +61,51 @@ public class ApiFileControllers {
 
 
     @PostMapping("/single/base")
-    public ResponseEntity<ResponseFile> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userEmail") String userEmail) throws Exception {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userEmail") String userEmail) {
         if (file.isEmpty() || userEmail == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        FileDto fileDto = fileService.uploadFile(file, userEmail);
-        String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(fileDto.getFileName())
-                .toUriString();
-
-        ResponseFile responseFile = new ResponseFile(
-                fileDto.getFileName(),
-                downloadUrl,
-                file.getContentType(),
-                file.getSize()
-        );
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email"));
-        if (user != null) {
-            auditLogService.logAction("UPLOAD", user, fileMapper.toEntity(fileDto));
+            return ResponseEntity.badRequest().body("File is empty or userEmail is null");
         }
 
-        return ResponseEntity.ok(responseFile);
+        try {
+            // Vérifier si l'utilisateur existe
+            User user = userRepository.findByEmail(userEmail)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid email"));
+
+            // Uploader le fichier
+            FileDto fileDto = fileService.uploadFile(file, userEmail);
+
+            // Sauvegarder le fichier en base de données
+            File savedFileEntity = fileRepository.save(fileMapper.toEntity(fileDto));
+
+            // Générer l'URL de téléchargement
+            String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/download/")
+                    .path(fileDto.getFileName())
+                    .toUriString();
+
+            // Créer l'objet de réponse
+            ResponseFile responseFile = new ResponseFile(
+                    fileDto.getFileName(),
+                    downloadUrl,
+                    file.getContentType(),
+                    file.getSize()
+            );
+
+            // Journaliser l'action d'upload
+            auditLogService.logAction("UPLOAD", user, savedFileEntity);
+
+            return ResponseEntity.ok(responseFile);
+
+        } catch (IllegalArgumentException e) {
+            // Retourner une réponse en cas d'erreur de validation
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            // Retourner une réponse en cas d'erreur interne
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to upload file: " + file.getOriginalFilename() + " - " + e.getMessage());
+        }
     }
+
 
     @PostMapping("/multiple/base")
     public ResponseEntity<List<ResponseFile>> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("userEmail") String userEmail) {

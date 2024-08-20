@@ -1,31 +1,30 @@
 spring:
   application:
     name:
-      spring-W
-
+      spring-W # nom de l’application utilisé pour l'identifier dans l'environnement Spring Boot
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/Spring_db
-    username: postgres
-    password: root
+    driver-class-name: org.postgresql.Driver  # Spécifie le driver JDBC pour PostgreSQL
+    url: jdbc:postgresql://localhost:5432/Spring_db # URL de connexion à la base de données PostgreSQL appelée "Spring_db" sur le serveur local
+    username: postgres # Nom d'utilisateur pour se connecter à la base de données PostgreSQL
+    password: root  # Mot de passe pour se connecter à la base de données PostgreSQL
     hikari:
-      auto-commit: false
+      auto-commit: false # Désactive l'auto-commit pour les transactions de base de données, elles doivent être commises manuellement
   jackson:
     serialization:
-      WRITE_DATES_AS_TIMESTAMPS: false
+      WRITE_DATES_AS_TIMESTAMPS: false # Indique que les dates doivent être sérialisées au format ISO-8601 plutôt qu'en timestamp
   main:
-    allow-circular-references: true
+    allow-circular-references: true # Permet les références circulaires dans les beans Spring, ce qui peut être nécessaire dans certaines configurations complexes
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect # Définit le dialecte SQL spécifique à PostgreSQL pour Hibernate
+    show-sql: true # Active l'affichage des requêtes SQL générées par Hibernate dans la console
     hibernate:
-      ddl-auto: update
+      ddl-auto: update # Active l'affichage des requêtes SQL générées par Hibernate dans la console
     properties:
       hibernate:
-        format_sql: true
-    database: postgresql
+        format_sql: true # Formate les requêtes SQL pour les rendre plus lisibles dans la console
+    database: postgresql # Spécifie que la base de données utilisée est PostgreSQL
 file:
-  upload-dir: F:/Work/
+  upload-dir: F:/Work/ # Chemin du répertoire où les fichiers téléchargés seront stockés localement sur le disque
 token:
   signing:
-    key: 413F4428472B4B6250655368566D5970337336763979244226452948404D6351
+    key: 413F4428472B4B6250655368566D5970337336763979244226452948404D6351 # Clé de signature utilisée pour signer les tokens JWT dans l'application

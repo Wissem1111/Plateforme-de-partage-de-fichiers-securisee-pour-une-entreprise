@@ -1,5 +1,6 @@
 package com.intership.file.share.auth.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intership.file.share.files.management.model.entity.File;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,9 +33,12 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<AuditLog> auditLogs;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+
     private List<File> files;
 
     @Override
